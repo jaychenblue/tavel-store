@@ -54,3 +54,9 @@ html, body {
     height: 20px;
     width: auto;
 }
+
+#pic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
