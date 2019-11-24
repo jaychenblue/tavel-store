@@ -49,3 +49,8 @@ html, body {
     font-size: 15px;
     color: #585C5C;
 }
+
+#navbar-logo {
+    height: 20px;
+    width: auto;
+}
