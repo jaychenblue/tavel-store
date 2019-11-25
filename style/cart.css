@@ -1,0 +1,47 @@
+body, #main {
+    background-color: #e6fff5;
+}
+
+html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#rc {
+    border-radius: 25px;
+    background-color: white;
+    width: auto;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#uniform {
+    display: block;
+    height: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+#outer-container {
+    margin-top: -40px;
+}
+
+.card-img-top {
+    display: block;
+    height: 250px;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#navbar-logo {
+    height: 20px;
+    width: auto;
+}
