@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+  <h:head>
+    <title><ui:insert name="title">Public Library</ui:insert></title>
+  </h:head>
+  <body>
+    <div id="header">
+      <ui:insert name="header">
+        <ui:include src="/WEB-INF/templates/header.xhtml" />
+      </ui:insert>
+    </div>
+    <div id="content">
+      <ui:insert name="main"/>
+    </div>
+    <div id="footer">
+      <ui:insert name="footer">
+        <ui:include src="/WEB-INF/templates/footer.xhtml" />
+      </ui:insert>
+    </div>
+  </body>
+</html>

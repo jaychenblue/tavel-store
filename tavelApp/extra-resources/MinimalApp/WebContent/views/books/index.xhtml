@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+      <h2>Manage Book entries:</h2>
+      <h:button value="List all books" outcome="listAll" />
+      <h:button value="Add a new Book" outcome="create" />
+      <h:button value="Update a book" outcome="update" />
+      <h:button value="Delete a book" outcome="delete" />
+      <h:form>
+        <h:commandButton value="Clear database"
+          action="#{bookCtrl.clearData()}" />
+        <h:commandButton value="Create test data"
+          action="#{bookCtrl.createTestData()}" />
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>

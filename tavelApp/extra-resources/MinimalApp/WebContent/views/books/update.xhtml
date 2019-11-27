@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+      <h:form id="updateBookForm">
+        <h:panelGrid columns="2">
+          <h:outputLabel for="selectBook" value="Select book: " />
+          <h:selectOneMenu id="selectBook" value="#{book.isbn}">
+            <f:selectItem itemValue="" itemLabel="---" />
+            <f:selectItems value="#{bookCtrl.books}" var="b"
+              itemValue="#{b.isbn}" itemLabel="#{b.title}" />
+            <f:ajax listener="#{bookCtrl.refreshObject( book)}"
+              render="isbn title year" />
+          </h:selectOneMenu>
+          <h:outputLabel for="isbn" value="ISBN: " />
+          <h:outputText id="isbn" value="#{book.isbn}" />
+          <h:outputLabel for="title" value="Title: " />
+          <h:inputText id="title" value="#{book.title}" />
+          <h:outputLabel for="year" value="Year: " />
+          <h:inputText id="year" p:type="number" value="#{book.year}" />
+        </h:panelGrid>
+        <h:commandButton value="Update"
+          action="#{bookCtrl.update( book.isbn, book.title, book.year)}" />
+      </h:form>
+      <h:button value="Main menu" outcome="index" />
+    </ui:define>
+  </ui:composition>
+</html>

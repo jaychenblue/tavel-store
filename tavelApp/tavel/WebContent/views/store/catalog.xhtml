@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+        <!-- JUMBOTRON -->
+        <div class="jumbotron jumbotron-fluid text-center" id="main">
+            <div class="container">
+                <div class="row" style="margin-top:-35px;margin-bottom:-40px;">
+                    <img id="logo" src="#{facesContext.externalContext.requestContextPath}/resources/img/logo.png" href="home.html"></img>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container -->
+        <div id="outer-container">
+            <div class="container-fluid" id="rc">
+                <div class="row">
+                    <img src="#{facesContext.externalContext.requestContextPath}/resources/img/uniform.jpg" id="uniform"></img>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Items -->
+                        <div class="row">
+                            <div class="col-lg-2 col-md-6 mb-4">
+                                <div class="card h-60">
+                                    <a href="items/polo_men.html"><img class="card-img-top" src="#{facesContext.externalContext.requestContextPath}/resources/img/polo_men.jpg" alt=""></img></a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a href="items/polo_men.html">#{itemCtrl.items[0].title}</a>
+                                        </h4>
+                                        <h5>$#{itemCtrl.items[0].price}</h5>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-2 col-md-6 mb-4">
+                                <div class="card h-60">
+                                    <a href="items/polo_women.html"><img class="card-img-top" src="#{facesContext.externalContext.requestContextPath}/resources/img/polo_women.jpg" alt=""></img></a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a href="items/polo_women.html">#{itemCtrl.items[1].title}</a>
+                                        </h4>
+                                        <h5>$#{itemCtrl.items[1].price}</h5>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-2 col-md-6 mb-4">
+                                <div class="card h-60">
+                                    <a href="items/backpack.html"><img class="card-img-top" src="#{facesContext.externalContext.requestContextPath}/resources/img/backpack.jpg" alt=""></img></a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a href="items/backpack.html">#{itemCtrl.items[2].title}</a>
+                                        </h4>
+                                        <h5>$#{itemCtrl.items[2].price}</h5>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-lg-2 col-md-6 mb-4">
+                                <div class="card h-60">
+                                    <a href="items/umbrella.html"><img class="card-img-top" src="#{facesContext.externalContext.requestContextPath}/resources/img/umbrella.jpg" alt=""></img></a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a href="items/umbrella.html">#{itemCtrl.items[3].title}</a>
+                                        </h4>
+                                        <h5>$#{itemCtrl.items[3].price}</h5>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="col-lg-2 col-md-6 mb-4">
+                                <div class="card h-60">
+                                    <a href="items/pants_men.html"><img class="card-img-top" src="#{facesContext.externalContext.requestContextPath}/resources/img/pants_men.jpg" alt=""></img></a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a href="items/pants_men.html">#{itemCtrl.items[4].title}</a>
+                                        </h4>
+                                        <h5>$#{itemCtrl.items[4].price}</h5>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="col-lg-2 col-md-6 mb-4">
+                                <div class="card h-60">
+                                    <a href="items/pants_women.html"><img class="card-img-top" src="#{facesContext.externalContext.requestContextPath}/resources/img/pants_women.jpg" alt=""></img></a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a href="items/pants_women.html">#{itemCtrl.items[5].title}</a>
+                                        </h4>
+                                        <h5>$#{itemCtrl.items[5].price}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+  </ui:composition>
+</html>

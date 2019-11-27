@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+      <h:dataTable value="#{bookCtrl.books}" var="b">
+        <h:column>
+          <f:facet name="header">ISBN</f:facet>
+            #{b.isbn}
+          </h:column>
+        <h:column>
+          <f:facet name="header">Title</f:facet>
+            #{b.title}
+          </h:column>
+        <h:column>
+          <f:facet name="header">Year</f:facet>
+            #{b.year}
+          </h:column>
+      </h:dataTable>
+      <h:button value="Main menu" outcome="index" />
+    </ui:define>
+  </ui:composition>
+</html>
