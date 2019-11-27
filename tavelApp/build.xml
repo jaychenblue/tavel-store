@@ -1,0 +1,302 @@
+<project name="JavaJpaJsf-Builder" basedir="." default="main">
+
+  <!-- EDIT THIS PROPERTY AND SET YOUR tomee installation FOLDER PATH -->
+  <property name="server.folder"  value="C:\Users\Diego Be\apache-tomee-plume-7.0.2"/>
+  
+  <!-- properties used internally by ANT tasks - don't change this unless you know exactly how! -->
+  <property name="lib.folder" value="./lib" />
+  
+  <!-- this is the first part of the create app command, and takes care of the validation checks -->
+  <target name="create">
+    <echo>Attempting to create a template for '${appname}' application.</echo> 
+    <!-- if force parameter is used, then existingAppFolder is set to existing folder name -->
+    <condition property="appfolder" value="${appname}" else="NO_SUCH_FOLDER">
+      <equals arg1="${force}" arg2="true" trim="true"/> 
+    </condition>
+    <!-- if pkgname parameter is used, then use it for java package name, otherwise use appname as pkgname -->
+    <condition property="packageName" value="${pkgname}" else="${appname}">
+      <isset property="pkgname"/> 
+    </condition>
+    <!-- delete existing/old app folder if was set (if not forced, the value is NO_SUCH_FOLDER, so nothing is deleted!) -->
+    <delete includeEmptyDirs="true" quiet="true">
+      <fileset dir="${appfolder}"/>
+    </delete>
+    <available file="${appname}" type="dir" property="app.dir.exists"/>  
+    <fail if="app.dir.exists">.
+      A folder named ${appname} already exists. The 'create app' operation cannot be completed.
+      Use -Dforce=true (cannot be reverted!) to delete the existing folder and all its content.
+    </fail>
+  </target>
+  
+  <!-- create the app structure, invoke additional tasks to create specific files -->
+  <target name="app" unless="app.dir.exists">
+    <echo>Create folder structure for application '${appname}' with package name set to '${packageName}'</echo>
+    <mkdir dir="${appname}/src" />
+    <mkdir dir="${appname}/src/${packageName}"/>
+    <mkdir dir="${appname}/src/${packageName}/model" />
+    <mkdir dir="${appname}/src/${packageName}/ctrl" />
+    <mkdir dir="${appname}/src/META-INF" />   
+    <mkdir dir="${appname}/WebContent"/>
+    <mkdir dir="${appname}/WebContent/META-INF"/>
+    <mkdir dir="${appname}/WebContent/resources"/>
+    <mkdir dir="${appname}/WebContent/resources/css"/>
+    <mkdir dir="${appname}/WebContent/resources/media"/>
+    <mkdir dir="${appname}/WebContent/views"/>
+    <mkdir dir="${appname}/WebContent/WEB-INF/lib"/>
+    <mkdir dir="${appname}/WebContent/WEB-INF/templates"/>
+    <!-- create persistence.xml file -->
+    <antcall target="createPersistenceXmlFile" />
+    <!-- create META-INF/MANIFEST.MF file -->
+    <antcall target="createManifest"/>
+    <!-- create faces-config.xml file -->
+    <antcall target="createFacesConfigXmlFile" />
+    <!-- create web.xml file --> 
+    <antcall target="createWebXmlFile" />
+    <!-- create view base template files -->
+    <antcall target="createTemplateHeaderFile" />
+    <antcall target="createTemplatePageFile" />
+    <antcall target="createTemplateFooterFile" />
+    <!-- create the index.html redirect file -->
+    <antcall target="createIndexHtmlFile" />
+    <!-- copy the jar files to the lib folder -->
+    <antcall target="copyDependencyFiles" />
+    <!-- all went fine, notify completion of the operation -->
+    <antcall target="completed" />
+  </target>
+  
+   <!-- all went fine, notify completion of the operation -->
+  <target name="completed">
+    <echo>All tasks completed for the application '${appname}'.</echo>
+  </target>
+  
+  <!-- copy the jar files to the lib folder -->
+  <target name="copyDependencyFiles">
+    <echo>Copy dependency (jar) files from '${lib.folder}' to '${appname}/WebContent/WEB-INF/lib' folder.</echo>
+    <copy todir="./${appname}/WebContent/WEB-INF/lib">
+      <fileset dir="${lib.folder}"/>
+    </copy>
+  </target>
+  
+  <!-- create the manifest file template -->
+  <target name="createManifest">
+    <echo>Create MANIFEST.MF file.</echo>
+    <manifest file="${appname}/WebContent/META-INF/MANIFEST.MF">
+      <attribute name="Created-By" value="Auto-Generated"/>
+      <attribute name="Class-Path" value=""/>
+    </manifest>
+    <echo>Done.</echo>
+  </target>
+  
+  <!-- create the persistence.xml file template -->
+  <target name="createPersistenceXmlFile">
+    <echo>Create persistence.xml file.</echo>
+    <echo file="${appname}/src/META-INF/persistence.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://java.sun.com/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <persistence-unit name="exampleApp">
+    <!-- JTA data source, same as defined in tomee/conf/tomee.xml but prefixed by jdbc -->
+    <jta-data-source>jdbc/exampleApp</jta-data-source>
+    <!-- JPA managed model class - multiple <class>...</class> occurrences are allowed -->
+    <!-- Example: <class>pl.model.Book</class> -->
+    <class>change.with.your.example.model.ClassName</class>
+    <properties>
+      <!-- Request auto-generation of the database schema -->
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <!-- The JPA class annotations are used to create the database schema -->
+      <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
+    </properties>
+  </persistence-unit>
+</persistence>]]>
+    </echo>
+    <echo>Done.</echo>
+  </target>
+  
+  <!-- create the faces-config.xml file template -->
+  <target name="createFacesConfigXmlFile">
+    <echo>Create faces-config.xml file.</echo>
+    <echo file="${appname}/WebContent/WEB-INF/faces-config.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+</faces-config>]]>
+    </echo>
+    <echo>Done.</echo>
+  </target>
+  
+  <!-- create the web.xml descriptor file -->
+  <target name="createWebXmlFile">
+    <echo>Create web.xml file.</echo>
+    <echo file="${appname}/WebContent/WEB-INF/web.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
+  <display-name>WRITE HERE YOUR APPLICATION NAME</display-name>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>/faces/*</url-pattern>
+  </servlet-mapping>
+  <context-param>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>client</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+    <param-value>resources.application</param-value>
+  </context-param>
+  <listener>
+    <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+  </listener>
+</web-app>]]>
+    </echo>
+    <echo>Done.</echo>
+  </target>
+  
+  <target name="createTemplateHeaderFile">
+    <echo>Create template header file.</echo>
+    <echo file="${appname}/WebContent/WEB-INF/templates/header.xhtml"><![CDATA[<div><h1>CHANGE TO YOUR APPLICATION NAME</h1></div>]]></echo>
+    <echo>Done.</echo>
+  </target>
+  <target name="createTemplateFooterFile">
+    <echo>Create template footer file.</echo>
+    <echo file="${appname}/WebContent/WEB-INF/templates/footer.xhtml"><![CDATA[<div></div>]]></echo>
+    <echo>Done.</echo>
+  </target>
+  <target name="createTemplatePageFile">
+    <echo>Create template page file.</echo>
+    <echo file="${appname}/WebContent/WEB-INF/templates/page.xhtml"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+  <h:head>
+    <title><ui:insert name="title">CHANGE TO YOUR APPLICATION NAME</ui:insert></title>
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet" type="text/css" />
+  </h:head>
+  <body>
+    <div id="header">
+      <ui:insert name="header">
+        <ui:include src="/WEB-INF/templates/header.xhtml"/>
+      </ui:insert>
+    </div>
+    <div id="content">
+      <ui:insert name="content"></ui:insert>
+    </div>
+    <div id="footer">
+      <ui:insert name="footer">
+        <ui:include src="/WEB-INF/templates/footer.xhtml"/>
+      </ui:insert>
+    </div>
+  </body>
+</html>]]>
+    </echo>
+    <echo>Done.</echo>
+  </target>
+  
+   
+  <!-- create the index.html file -->
+  <target name="createIndexHtmlFile">
+    <echo>Create index.html file.</echo>
+    <echo file="${appname}/WebContent/index.html"><![CDATA[<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="0;url=./faces/views/books/index.xhtml"/>
+  </head>
+  <body></body>
+</html>]]>
+    </echo>
+    <echo>Done.</echo>
+  </target>
+  
+  <!-- build the application -->
+  <target name="build">
+    <echo>Attempting to build the '${appname}' application.</echo> 
+    <available file="${appname}" type="dir" property="app.folder.exists"/>  
+    <fail unless="app.folder.exists">.
+      The folder '${appname}' requested to build the application was not found.
+      Either the application was not created yet, or it is not located on the same folder as the ANT script.
+    </fail>
+  </target>
+  
+  <!-- create the war file -->
+  <target name="war">
+    <echo>Build the '${appname}.war' file.</echo>
+    <delete file="./${appname}/${appname}.war" />
+    <mkdir dir="${appname}/build/classes"/>
+    <path id="lib.classpath">
+      <fileset dir="${server.folder}/lib">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+    <!-- compile the Java code -->
+    <javac srcdir="./${appname}/src" destdir="./${appname}/build/classes" includeantruntime="false">
+       <classpath refid="lib.classpath"/>
+    </javac>
+    <!-- create the war file -->
+    <war destfile="${appname}/${appname}.war" webxml="${appname}/WebContent/WEB-INF/web.xml">
+      <zipfileset dir="./${appname}/WebContent" includes="index.html"/>
+      
+      <zipfileset dir="./${appname}/WebContent/resources" prefix="resources" erroronmissingdir="false"/>
+      <zipfileset dir="./${appname}/WebContent/views" prefix="views"/>
+      <zipfileset dir="./${appname}/WebContent/WEB-INF/templates" prefix="WEB-INF/templates"/>
+      <zipfileset dir="./${appname}/WebContent/WEB-INF" includes="faces-config.xml" prefix="WEB-INF"/>
+      <zipfileset dir="./${appname}/src/META-INF" includes="persistence.xml" prefix="WEB-INF/classes/META-INF"/>
+      <lib dir="./lib" erroronmissingdir="false"/>
+      <classes dir="./${appname}/build/classes"/>
+    </war>
+    <!-- clean all the mesh created by the build task -->
+    <!--antcall target="clean" /-->
+     <!-- all went fine, notify completion of the operation -->
+    <antcall target="completed" />
+  </target>
+  
+  <!-- clean all the mesh created by the build task -->
+  <target name="clean">
+    <echo>Delete the '${appname}/build' folder used during the build operation</echo>
+    <delete includeEmptyDirs="true" quiet="true">
+      <fileset dir="${appname}/build"/>
+    </delete>
+    <echo>Done.</echo>
+  </target>
+  
+  <!-- deploy the war file on the specified server.webapps.folder location -->
+  <target name="deploy" depends="build, war">
+    <!-- copy the war file to webapps folder of the server -->  
+    <copy file="./${appname}/${appname}.war" todir="${server.folder}/webapps"/>
+  </target>
+  
+  <!-- create the main task, this is showing help text if no specific task was invoked -->
+  <target name="main">
+    <echo>
+      History: [...] means optional, {...} means parameter.
+      
+      Available options:
+        create app -Dappname=yourAppName [-DpkgName=javaPackageName]
+        NOTE: if {pkgname} is not provided, then {appname} is used as pkgname
+
+        build war -Dappname=yourAppFolderName
+        NOTE: be sure to have the lib folder containing all jar dependencies in the 
+              same folder as ant script, otherwise the war may not be deployed.
+        
+        deploy -Dappname=yourAppFolderName
+        NOTE: the server.webapps.folder property must be set, by editing the ant script 
+              file, so it points out to the location of the server "webapps" folder.
+    </echo>
+  </target>
+  <!-- invoke the main task and show the help text if "ant help" is executed -->
+  <target name="help">
+    <antcall target="main" />
+  </target>
+</project>
