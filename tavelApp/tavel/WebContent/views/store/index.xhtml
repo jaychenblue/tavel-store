@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+        <!-- Carousel -->
+        <div id="carouselIndicators" class="carousel slide carousel-fade" data-ride="carousel" data-interval="5000">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselIndicators" data-slide-to="2"></li>
+            </ol>
+        
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <!-- slide 0 -->
+                    <img id="slide_0" class="d-block w-100" src="#{facesContext.externalContext.requestContextPath}/resources/img/home_banner.jpg" alt="First slide"></img>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1>Welcome to Tavel!</h1>
+                        <p>Embark on a grand adventure!</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <!-- slide 1 -->
+                    <img class="d-block w-100" src="#{facesContext.externalContext.requestContextPath}/resources/img/home_banner.jpg" alt="Second slide"></img>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1>All the merch you need!</h1>
+                        <p>Reach new heights!</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <!-- slide 2 -->
+                    <img class="d-block w-100" src="#{facesContext.externalContext.requestContextPath}/resources/img/home_banner.jpg" alt="Third slide"></img>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1>Great employee pricing and free shipping!</h1>
+                        <p>Where do your loyalties lie?</p>
+                    </div>
+                </div>
+            </div>
+        
+            <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4" id="second_box">
+                <br></br><br></br><br></br><br></br>
+                <h:link value = "" outcome = "catalog">
+                    <h1 class="display-5" style="color: #ffffff;">Browse the Employee Catalog</h1>
+                </h:link>
+            </div>
+            <div class="col-lg-4" id="third_box">
+                <br></br><br></br><br></br><br></br>
+                <h1 class="display-5" style="color: black;">Offers</h1>
+            </div>
+            <div class="col-lg-4" id="fourth_box">
+                <br></br><br></br><br></br><br></br>
+                <h1 class="display-5" style="color: #ffffff;">About Us</h1>
+            </div>
+        </div>
+    </ui:define>
+  </ui:composition>
+</html>

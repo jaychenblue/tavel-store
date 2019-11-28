@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+        <!-- JUMBOTRON -->
+        <div class="jumbotron jumbotron-fluid text-center" id="main">
+            <div class="container">
+                <div class="row" style="margin-top:-35px;margin-bottom:-40px;">
+                    <img id="logo" src="#{facesContext.externalContext.requestContextPath}/resources/img/logo.png"></img>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container -->
+        <h:form id="add">
+            <div id="outer-container">
+                <div class="container-fluid" id="rc">
+                    <div class="row">
+                        <div class="col-lg-6" id="item">
+                            <img src="#{facesContext.externalContext.requestContextPath}/resources/img/backpack.jpg" id="pic"></img>
+                        </div>
+                        <div class="col-lg-6">
+                            <br></br><br></br>
+                            <h3><small class="text-muted">Dr. Tavel</small></h3>
+                            <h1>#{itemCtrl.items[2].title}</h1>
+                            <hr></hr>
+                            <p>Price: <span style="color:#ff4d4d; font-size: 20px;">$#{itemCtrl.items[2].price}</span></p>
+                            <br></br>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+                                        </div>
+                                        <h:selectOneMenu class="custom-select" value="#{OrderItem.quantity}">
+                                            <f:selectItem itemValue="1" itemLabel="1"/>
+                                            <f:selectItem itemValue="2" itemLabel="2"/>
+                                            <f:selectItem itemValue="3" itemLabel="3"/>
+                                            <f:selectItem itemValue="4" itemLabel="4"/>
+                                            <f:selectItem itemValue="5" itemLabel="5"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <br></br>
+                            <h:commandButton value="Add to Cart" class="btn btn-lg btn-info" action="#{OrderItemCtrl.add(3, 1, OrderItem.quantity, NULL, NULL, NULL)}"/>
+                            <hr></hr>
+                            <p id="description">Prices in Canadian Dollars (CAD).</p>
+                            <hr></hr>
+                            <h:button value="Back to Catalog" class="btn btn-lg btn-info" outcome="catalog" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+  </ui:composition>
+</html>
