@@ -1,7 +1,9 @@
 <div>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="home.html"><img src="#{facesContext.externalContext.requestContextPath}/resources/img/transparent_logo.png" id="navbar-logo"></img></a>
+        <h:link value = "" outcome = "home"><img src="#{facesContext.externalContext.requestContextPath}/resources/img/transparent_logo.png" id="navbar-logo"></img></h:link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02"
             aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,4 +23,5 @@
                     style="font-size:20px;">Cart</span></img></button>
         </div>
     </nav>
+</html>
 </div>
