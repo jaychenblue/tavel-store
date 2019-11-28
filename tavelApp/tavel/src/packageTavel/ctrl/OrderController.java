@@ -32,6 +32,31 @@ public class OrderController {
     return Order.retrieveAll(em);
   }
 
+  public Order getOrder(int orderId) {
+    return Order.retrieve(em, orderId);
+  }
+
+  /**
+   * Find the order ID that keeps track of the cart.
+   * 
+   * @return an integer that maps to the order ID that keeps track of the cart.
+   */
+  public int getCartId() {
+    return Order.getCartId(em);
+  }
+
+  /**
+   * Finishes an order by changing the value of the cartFlag.
+   */
+  public void finishOrder(int idOrder) {
+    try {
+      Order.update(em, ut, idOrder, "Admin", 1, getOrder(idOrder).getPrice());
+      Order.add(em, ut, "admin", 0, 0.00);
+    } catch ( Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Update the reference object by setting its property values to match the one
    * existing in the database for the specific instance, identified by the
@@ -44,14 +69,15 @@ public class OrderController {
     Order foundOrder = Order.retrieve(em, order.getOrderID());
     order.setCustomerName(foundOrder.getCustomerName());
     order.setCartFlag(foundOrder.getCartFlag());
+    order.setPrice(foundOrder.getPrice());
   }
 
   /**
    * Create and persist a new Order instance.
    */
-  public String add(String customerName, int cartFlag) {
+  public String add(String customerName, int cartFlag, double price) {
     try {
-      Order.add(em, ut, customerName, cartFlag);
+      Order.add(em, ut, customerName, cartFlag, price);
       // Clear the form after creating the Order record
       FacesContext facesContext = FacesContext.getCurrentInstance();
       facesContext.getExternalContext().getRequestMap().remove( "order");
@@ -64,9 +90,22 @@ public class OrderController {
   /**
    * Update an Order instance.
    */
-  public String update(int id, String customerName, int cartFlag) {
+  public String update(int id, String customerName, int cartFlag, double price) {
     try {
-      Order.update(em, ut, id, customerName, cartFlag);
+      Order.update(em, ut, id, customerName, cartFlag, price);
+    } catch ( Exception e) {
+      e.printStackTrace();
+    }
+    return "update";
+  }
+
+  /**
+   * Update the price of an order
+   */
+  public String updatePrice(int id, double price) {
+    try {
+      double val = getOrder(id).getPrice() + price;
+      Order.update(em, ut, id, "Admin", 0, val);
     } catch ( Exception e) {
       e.printStackTrace();
     }

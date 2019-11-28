@@ -36,7 +36,7 @@ public class OrderItem {
    * Constructors
    */
   public OrderItem(int id, int itemId, int orderId, int q, String size, String firstName, String lastName) {
-    this.setId(id);
+    this.setID(id);
     this.setItemId(itemId);
     this.setOrderId(orderId);
     this.setQuantity(q);
@@ -61,7 +61,7 @@ public class OrderItem {
     return id;
   }
 
-  public void setId(int id) {
+  public void setID(int id) {
     this.id = id;
   }
 
@@ -125,6 +125,17 @@ public class OrderItem {
    */
   public static List<OrderItem> retrieveAll(EntityManager em) {
     TypedQuery<OrderItem> query = em.createQuery("SELECT b FROM OrderItem b", OrderItem.class);
+    List<OrderItem> orderItems = query.getResultList();
+    System.out.println("OrderItem.retrieveAll: " + orderItems.size()
+        + " orderItems were loaded from DB.");
+    return orderItems;
+  }
+
+  /**
+   * Retrieve all orderItem records from the orderItems table that belong to the cart.
+   */
+  public static List<OrderItem> getCart(EntityManager em, int idToLookFor) {
+    TypedQuery<OrderItem> query = em.createQuery("SELECT b FROM OrderItem b WHERE b.orderID = :id", OrderItem.class).setParameter("id", idToLookFor);
     List<OrderItem> orderItems = query.getResultList();
     System.out.println("OrderItem.retrieveAll: " + orderItems.size()
         + " orderItems were loaded from DB.");

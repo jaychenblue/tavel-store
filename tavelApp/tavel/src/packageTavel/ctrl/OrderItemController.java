@@ -17,19 +17,28 @@ import javax.transaction.UserTransaction;
 
 import packageTavel.model.OrderItem;
 
-@SessionScoped @ManagedBean(name="OrderItemCtrl")
+@SessionScoped @ManagedBean(name="orderItemCtrl")
 public class OrderItemController {
   @PersistenceContext(unitName="tavelApp")
   private EntityManager em;
   @Resource UserTransaction ut;
 
   /**
-   * Read the list of all the books from the database.
+   * Read the list of all the orderItems from the database.
    * 
    * @return a list with all the OrderItem instance found in the database.
    */
   public List<OrderItem> getOrderItems() {
     return OrderItem.retrieveAll(em);
+  }
+
+  /**
+   * Read the list of all the items in the cart
+   * 
+   * @return a list with all the OrderItem instance found in the database.
+   */
+  public List<OrderItem> getOrderItemsInCart(int idToLookFor) {
+    return OrderItem.getCart(em, idToLookFor);
   }
 
   /**
