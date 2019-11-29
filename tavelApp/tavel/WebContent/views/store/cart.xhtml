@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+        <!-- JUMBOTRON -->
+        <div class="jumbotron jumbotron-fluid text-center" id="main">
+            <div class="container">
+                <div class="row" style="margin-top:-35px;margin-bottom:-40px;">
+                    <img id="logo" src="#{facesContext.externalContext.requestContextPath}/resources/img/logo.png" href="home.html"></img>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container -->
+        <div id="outer-container">
+            <div class="container-fluid" id="rc">
+                <br />
+                <h1 class="display-4">Order History</h1>
+                <br /><br />                
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ui:define>
+  </ui:composition>
+</html>
