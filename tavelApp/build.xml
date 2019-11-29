@@ -1,7 +1,7 @@
 <project name="JavaJpaJsf-Builder" basedir="." default="main">
 
   <!-- EDIT THIS PROPERTY AND SET YOUR tomee installation FOLDER PATH -->
-  <property name="server.folder"  value="C:\Users\Diego Be\apache-tomee-plume-7.0.2"/>
+  <property name="server.folder"  value="/Users/Jay/Downloads/apache-tomee-plume-8.0.0"/>
   
   <!-- properties used internally by ANT tasks - don't change this unless you know exactly how! -->
   <property name="lib.folder" value="./lib" />

@@ -29,3 +29,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.DS_Store
+tavelApp/build.xml
+tavel.war
+tavelApp/tavel/tavel.war
