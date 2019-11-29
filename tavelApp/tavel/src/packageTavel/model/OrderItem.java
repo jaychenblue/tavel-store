@@ -229,4 +229,9 @@ public class OrderItem {
     double res = (double) em.createQuery("SELECT COALESCE(SUM(b.quantity * b.price),0) FROM OrderItem b WHERE b.orderID = :id").setParameter("id", idToLookFor).getSingleResult();
     return res;
   }
+
+  public static Long countItems(EntityManager em, int idToLookFor) {
+    Long res = (Long) em.createQuery("SELECT COUNT(b.id) FROM OrderItem b WHERE b.orderID = :id").setParameter("id", idToLookFor).getSingleResult();
+    return res;
+  }
 }

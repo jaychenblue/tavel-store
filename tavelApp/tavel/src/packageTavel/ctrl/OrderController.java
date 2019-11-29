@@ -48,12 +48,14 @@ public class OrderController {
   /**
    * Finishes an order by changing the value of the cartFlag.
    */
-  public void finishOrder(int idOrder, double p) {
-    try {
-      Order.update(em, ut, idOrder, "Admin", 1, p);
-      Order.add(em, ut, "Admin", 0, 0.00);
-    } catch ( Exception e) {
-      e.printStackTrace();
+  public void finishOrder(int idOrder, double p, int quantity) {
+    if (quantity > 0) {
+      try {
+        Order.update(em, ut, idOrder, "Admin", 1, p);
+        Order.add(em, ut, "Admin", 0, 0.00);
+      } catch ( Exception e) {
+        e.printStackTrace();
+      }
     }
   }
 

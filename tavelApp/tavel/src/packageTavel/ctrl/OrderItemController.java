@@ -101,4 +101,8 @@ public class OrderItemController {
   public double getTotal(int id) {
     return OrderItem.getTotal(em, id);
   }
+
+  public Long countItems(int id) {
+    return OrderItem.countItems(em, id);
+  }
 }
