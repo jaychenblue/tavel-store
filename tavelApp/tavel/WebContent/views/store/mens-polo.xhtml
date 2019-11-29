@@ -3,7 +3,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:x="http://primefaces.org/ui">
 
   <ui:composition template="/WEB-INF/templates/page.xhtml">
     <ui:define name="main">
@@ -87,7 +88,7 @@
                                 <div class="col-lg-6"></div>
                             </div>
                             <br></br>
-                            <h:commandButton value="Add to Cart" class="btn btn-lg btn-info" action="#{OrderItemCtrl.add(1, 1, OrderItem.quantity, OrderItem.size, OrderItem.firstName, OrderItem.lastName)}"/>
+                            <h:commandButton value="Add to Cart" class="btn btn-lg btn-info" action="#{ orderItemCtrl.add(1, orderCtrl.getCartId(), OrderItem.quantity, OrderItem.size, OrderItem.firstName, OrderItem.lastName, itemCtrl.items[0].price)}" />
                             <hr></hr>
                             <p id="description">Prices in Canadian Dollars (CAD).</p>
                             <hr></hr>

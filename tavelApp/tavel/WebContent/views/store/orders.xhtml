@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+        <!-- JUMBOTRON -->
+        <div class="jumbotron jumbotron-fluid text-center" id="main">
+            <div class="container">
+                <div class="row" style="margin-top:-35px;margin-bottom:-40px;">
+                    <img id="logo" src="#{facesContext.externalContext.requestContextPath}/resources/img/logo.png"></img>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container -->
+        <h:form id="add">
+            <h:dataTable value="#{orderItemCtrl.getOrderItemsInCart(orderCtrl.getCartId())}" var="b">
+                <h:column>
+                <f:facet name="header">Item</f:facet>
+                    #{itemCtrl.items[b.itemId].title}
+                </h:column>
+                <h:column>
+                <f:facet name="header">Quantity</f:facet>
+                    #{b.quantity}
+                </h:column>
+                <h:column>
+                <f:facet name="header">Price</f:facet>
+                    #{itemCtrl.items[b.itemId].price}
+                </h:column>
+                <h:column>
+                <f:facet name="header">Total</f:facet>
+                    #{itemCtrl.items[b.itemId].price * b.quantity}
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:define>
+  </ui:composition>
+</html>

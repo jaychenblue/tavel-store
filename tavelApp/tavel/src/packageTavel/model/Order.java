@@ -22,6 +22,7 @@ public class Order {
   
   private String customerName;
   private int cartFlag;
+  private double price;
 
   /**
    * Default constructor, required for entity classes
@@ -31,15 +32,17 @@ public class Order {
   /**
    * Constructors
    */
-  public Order(int orderID, String customerName, int cartFlag) {
+  public Order(int orderID, String customerName, int cartFlag, double price) {
     this.setOrderID(orderID);
     this.setCustomerName(customerName);
     this.setCartFlag(cartFlag);
+    this.setPrice(price);
   }
 
-  public Order(String customerName, int cartFlag) {
+  public Order(String customerName, int cartFlag, double price) {
     this.setCustomerName(customerName);
     this.setCartFlag(cartFlag);
+    this.setPrice(price);
   }
 
   /**
@@ -66,7 +69,15 @@ public class Order {
   }
 
   public void setCartFlag(int cartFlag) {
-    this.setCartFlag(cartFlag);
+    this.cartFlag = cartFlag;
+  }
+
+  public double getPrice() {
+    return price;
+  }
+
+  public void setPrice(double price) {
+    this.price = price;
   }
 
   /**
@@ -81,7 +92,7 @@ public class Order {
    */
   public static List<Order> retrieveAll(EntityManager em) {
     TypedQuery<Order> query = em.createQuery("SELECT b FROM Order b", Order.class);
-    List<Order> orders = query.getResultList();
+    List<Order> orders = query.getResultList(); 
     System.out.println("Order.retrieveAll: " + orders.size()
         + " orders were loaded from DB.");
     return orders;
@@ -93,9 +104,18 @@ public class Order {
   public static Order retrieve(EntityManager em, int orderID) {
     Order order = em.find(Order.class, orderID);
     if (order != null) {
-      System.out.println("Order.retrieve: loaded order " + order);
+      System.out.println("Order.retrieve: loaded Order " + order);
     }
     return order;
+  }
+
+  /**
+   * Find the order ID that keeps track of the cart.
+   */
+  public static int getCartId(EntityManager em) {
+    TypedQuery<Order> query = em.createQuery("SELECT b FROM Order b WHERE b.cartFlag = 0", Order.class);
+    Order order = query.getSingleResult();
+    return order.getOrderID();
   }
 
   /**
@@ -103,9 +123,9 @@ public class Order {
    * @throws Exception
    */
   public static void add(EntityManager em, UserTransaction ut,
-      String customerName, int cartFlag) throws Exception {
+      String customerName, int cartFlag, double price) throws Exception {
     ut.begin();
-    Order order = new Order(customerName, cartFlag);
+    Order order = new Order(customerName, cartFlag, price);
     em.persist(order);
     ut.commit();
     System.out.println("Order.add: the order " + order + " was saved.");
@@ -116,7 +136,7 @@ public class Order {
    * @throws Exception
    */
   public static void update(EntityManager em, UserTransaction ut, int orderID,
-      String customerName, int cartFlag) throws Exception {
+      String customerName, int cartFlag, double price) throws Exception {
     ut.begin();
     Order order = em.find(Order.class, orderID);
     if (customerName != null && !customerName.equals(order.customerName)) {
@@ -125,8 +145,11 @@ public class Order {
     if (cartFlag != order.cartFlag) {
       order.setCartFlag(cartFlag);
     }
+    if (price != order.price) {
+      order.setPrice(price);
+    }
     ut.commit();
-    System.out.println("Order.update: the order " + order + " was updated.");
+    System.out.println("Order.update: the order " + order + " was updated. New price: " + price);
   }
 
   /**
