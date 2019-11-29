@@ -87,7 +87,7 @@
                                 
                             </div>
                             <div class="col-4">
-                                <h:commandButton value="Finish Order" class="btn btn-lg btn-primary btn-block" action="#{orderCtrl.finishOrder(orderCtrl.getCartId(), orderItemCtrl.getTotal(orderCtrl.getCartId()))}"/>
+                                <h:commandButton value="Finish Order" class="btn btn-lg btn-primary btn-block" action="#{orderCtrl.finishOrder(orderCtrl.getCartId(), orderItemCtrl.getTotal(orderCtrl.getCartId()), orderItemCtrl.countItems(orderCtrl.getCartId()))}"/>
                             </div>
                         </div>
                         <br />
