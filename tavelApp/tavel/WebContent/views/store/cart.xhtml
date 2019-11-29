@@ -19,38 +19,86 @@
         <div id="outer-container">
             <div class="container-fluid" id="rc">
                 <br />
-                <h1 class="display-4">Order History</h1>
-                <br /><br />                
+                <button class="btn btn-lg btn-outline-secondary">Back to Catalog</button>
+                <br /><br />
+                <div class="row">
+                    <div class="col-6">
+                        <h1 class="display-4">Your Shopping Cart</h1>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                    <div class="col-2">
+                        
+                    </div>
+                </div>
+                <br />               
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col" style="width:40%">Product Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price (per unit)</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Subtotal</th>
+                            <th scope="col" style="width:10%">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td>#{itemCtrl.items[0].title}</td>
+                            <td>3</td>
+                            <td>$#{itemCtrl.items[0].price}</td>
+                            <td>M</td>
+                            <td>$36</td>
+                            <td><button class="btn btn-outline-danger btn-block">Delete</button></td>
                         </tr>
                         <tr>
                             <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
+                            <td>#{itemCtrl.items[1].title}</td>
+                            <td>5</td>
+                            <td>$#{itemCtrl.items[1].price}</td>
+                            <td>XS</td>
+                            <td>$60</td>
+                            <td><button class="btn btn-outline-danger btn-block">Delete</button></td>
                         </tr>
                         <tr>
                             <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
+                            <td>#{itemCtrl.items[2].title}</td>
+                            <td>2</td>
+                            <td>$#{itemCtrl.items[2].price}</td>
+                            <td>n/a</td>
+                            <td>$60</td>
+                            <td><button class="btn btn-outline-danger btn-block">Delete</button></td>
                         </tr>
                     </tbody>
                 </table>
+                <hr />
+                <div class="row">
+                    <div class="col-8">
+
+                    </div>
+                    <div class="col-4">
+                        <span style="float:right;"><h1>Total Price: <span style="color:#ff4d4d;">$109.68</span></h1></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        
+                    </div>
+                    <div class="col-1">
+
+                    </div>
+                    <div class="col-4">
+                        
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-lg btn-primary btn-block">Confirm Order</button>
+                    </div>
+                </div>
+                <br />
             </div>
         </div>
     </ui:define>

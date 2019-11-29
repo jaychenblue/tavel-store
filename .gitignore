@@ -32,3 +32,4 @@ build/
 
 .DS_Store
 tavelApp/build.xml
+tavel.war
