@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:x="http://primefaces.org/ui">
 
   <ui:composition template="/WEB-INF/templates/page.xhtml">
     <ui:define name="main">
@@ -10,97 +12,88 @@
         <div class="jumbotron jumbotron-fluid text-center" id="main">
             <div class="container">
                 <div class="row" style="margin-top:-35px;margin-bottom:-40px;">
-                    <img id="logo" src="#{facesContext.externalContext.requestContextPath}/resources/img/logo.png" href="home.html"></img>
+                    <img id="logo" src="#{facesContext.externalContext.requestContextPath}/resources/img/logo.png"></img>
                 </div>
             </div>
         </div>
 
         <!-- Container -->
         <div id="outer-container">
-            <div class="container-fluid" id="rc">
-                <br />
-                <button class="btn btn-lg btn-outline-secondary">Back to Catalog</button>
-                <br /><br />
-                <div class="row">
-                    <div class="col-6">
-                        <h1 class="display-4">Your Shopping Cart</h1>
+                <div class="container-fluid" id="rc">
+                    <br />
+                    <h:button value="Back to Catalog" class="btn btn-lg btn-outline-secondary" outcome="catalog" />
+                    <br /><br />
+                    <div class="row">
+                        <div class="col-6">
+                            <h1 class="display-4">Your Shopping Cart</h1>
+                        </div>
+                        <div class="col-4">
+    
+                        </div>
+                        <div class="col-2">
+                            
+                        </div>
                     </div>
-                    <div class="col-4">
-
-                    </div>
-                    <div class="col-2">
-                        
-                    </div>
+                    <br />
+                    <h:form prependId="false">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col" style="width:40%">Product Name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price (per unit)</th>
+                                    <th scope="col">Size</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col" style="width:10%">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ui:repeat var="item" value="#{orderItemCtrl.getOrderItemsInCart(orderCtrl.getCartId())}" varStatus="myVarStatus">
+                                    <tr>
+                                        <th scope="row">#{myVarStatus.index}</th>
+                                        <td>#{itemCtrl.items[item.itemId - 1].title}</td>
+                                        <td>#{item.quantity}</td>
+                                        <td>$#{itemCtrl.items[item.itemId - 1].price}</td>
+                                        <td>#{item.size}</td>
+                                        <td>$#{itemCtrl.items[item.itemId - 1].price * item.quantity}</td>
+                                        <td>
+                                            <h:form prependId="false">
+                                                <h:commandLink value="Delete" class="btn btn-outline-danger btn-block" action="#{orderItemCtrl.destroy(b.ID)}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </tbody>
+                        </table>
+                        <hr />
+                        <div class="row">
+                            <div class="col-8">
+    
+                            </div>
+                            <div class="col-4">
+                                <span style="float:right;"><h1>Total Price: <span style="color:#ff4d4d;">$#{orderItemCtrl.getTotal(orderCtrl.getCartId())}</span></h1></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                
+                            </div>
+                            <div class="col-1">
+    
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                            <div class="col-4">
+                                <h:commandButton value="Finish Order" class="btn btn-lg btn-primary btn-block" action="#{orderCtrl.finishOrder(orderCtrl.getCartId(), orderItemCtrl.getTotal(orderCtrl.getCartId()))}"/>
+                            </div>
+                        </div>
+                        <br />
+                    </h:form>
                 </div>
-                <br />               
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" style="width:40%">Product Name</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Price (per unit)</th>
-                            <th scope="col">Size</th>
-                            <th scope="col">Subtotal</th>
-                            <th scope="col" style="width:10%">Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>#{itemCtrl.items[0].title}</td>
-                            <td>3</td>
-                            <td>$#{itemCtrl.items[0].price}</td>
-                            <td>M</td>
-                            <td>$36</td>
-                            <td><button class="btn btn-outline-danger btn-block">Delete</button></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>#{itemCtrl.items[1].title}</td>
-                            <td>5</td>
-                            <td>$#{itemCtrl.items[1].price}</td>
-                            <td>XS</td>
-                            <td>$60</td>
-                            <td><button class="btn btn-outline-danger btn-block">Delete</button></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>#{itemCtrl.items[2].title}</td>
-                            <td>2</td>
-                            <td>$#{itemCtrl.items[2].price}</td>
-                            <td>n/a</td>
-                            <td>$60</td>
-                            <td><button class="btn btn-outline-danger btn-block">Delete</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr />
-                <div class="row">
-                    <div class="col-8">
-
-                    </div>
-                    <div class="col-4">
-                        <span style="float:right;"><h1>Total Price: <span style="color:#ff4d4d;">$109.68</span></h1></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3">
-                        
-                    </div>
-                    <div class="col-1">
-
-                    </div>
-                    <div class="col-4">
-                        
-                    </div>
-                    <div class="col-4">
-                        <button class="btn btn-lg btn-primary btn-block">Confirm Order</button>
-                    </div>
-                </div>
-                <br />
             </div>
-        </div>
     </ui:define>
   </ui:composition>
 </html>

@@ -17,19 +17,28 @@ import javax.transaction.UserTransaction;
 
 import packageTavel.model.OrderItem;
 
-@SessionScoped @ManagedBean(name="OrderItemCtrl")
+@SessionScoped @ManagedBean(name="orderItemCtrl")
 public class OrderItemController {
   @PersistenceContext(unitName="tavelApp")
   private EntityManager em;
   @Resource UserTransaction ut;
 
   /**
-   * Read the list of all the books from the database.
+   * Read the list of all the orderItems from the database.
    * 
    * @return a list with all the OrderItem instance found in the database.
    */
   public List<OrderItem> getOrderItems() {
     return OrderItem.retrieveAll(em);
+  }
+
+  /**
+   * Read the list of all the items in the cart
+   * 
+   * @return a list with all the OrderItem instance found in the database.
+   */
+  public List<OrderItem> getOrderItemsInCart(int idToLookFor) {
+    return OrderItem.getCart(em, idToLookFor);
   }
 
   /**
@@ -48,14 +57,15 @@ public class OrderItemController {
     orderItem.setSize(foundOrderItem.getSize());
     orderItem.setFirstName(foundOrderItem.getFirstName());
     orderItem.setLastName(foundOrderItem.getLastName());
+    orderItem.setPrice(foundOrderItem.getPrice());
   }
 
   /**
    * Create and persist a new OrderItem instance.
    */
-  public String add(int itemID, int orderId, int q, String size, String firstName, String lastName) {
+  public String add(int itemID, int orderId, int q, String size, String firstName, String lastName, double p) {
     try {
-      OrderItem.add(em, ut, itemID, orderId, q, size, firstName, lastName);
+      OrderItem.add(em, ut, itemID, orderId, q, size, firstName, lastName, p);
       // Clear the form after creating the OrderItem record
       FacesContext facesContext = FacesContext.getCurrentInstance();
       facesContext.getExternalContext().getRequestMap().remove( "orderItem");
@@ -68,24 +78,27 @@ public class OrderItemController {
   /**
    * Update an OrderItem instance.
    */
-  public String update(int id, int itemID, int orderId, int q, String size, String firstName, String lastName) {
+  public void update(int id, int itemID, int orderId, int q, String size, String firstName, String lastName, double p) {
     try {
-      OrderItem.update(em, ut, id, itemID, orderId, q, size, firstName, lastName);
+      OrderItem.update(em, ut, id, itemID, orderId, q, size, firstName, lastName, p);
     } catch ( Exception e) {
       e.printStackTrace();
     }
-    return "update";
   }
 
   /**
    * Delete an OrderItem entry from database.
    */
-  public String destroy(int id) {
+  public void destroy(int id) {
     try {
+      System.out.println("Destroying orderItem with id: " + id);
       OrderItem.destroy( em, ut, id);
     } catch ( Exception e) {
       e.printStackTrace();
     }
-    return "delete";
+  }
+
+  public double getTotal(int id) {
+    return OrderItem.getTotal(em, id);
   }
 }

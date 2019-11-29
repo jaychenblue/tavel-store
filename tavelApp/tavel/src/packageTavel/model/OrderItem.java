@@ -26,6 +26,7 @@ public class OrderItem {
   private String size;
   private String firstName;
   private String lastName;
+  private double price;
 
   /**
    * Default constructor, required for entity classes
@@ -35,23 +36,25 @@ public class OrderItem {
   /**
    * Constructors
    */
-  public OrderItem(int id, int itemId, int orderId, int q, String size, String firstName, String lastName) {
-    this.setId(id);
+  public OrderItem(int id, int itemId, int orderId, int q, String size, String firstName, String lastName, double p) {
+    this.setID(id);
     this.setItemId(itemId);
     this.setOrderId(orderId);
     this.setQuantity(q);
     this.setSize(size);
     this.setFirstName(firstName);
     this.setLastName(lastName);
+    this.setPrice(p);
   }
 
-  public OrderItem(int itemId, int orderId, int q, String size, String firstName, String lastName) {
+  public OrderItem(int itemId, int orderId, int q, String size, String firstName, String lastName, double p) {
     this.setItemId(itemId);
     this.setOrderId(orderId);
     this.setQuantity(q);
     this.setSize(size);
     this.setFirstName(firstName);
     this.setLastName(lastName);
+    this.setPrice(p);
   }
 
   /**
@@ -61,7 +64,7 @@ public class OrderItem {
     return id;
   }
 
-  public void setId(int id) {
+  public void setID(int id) {
     this.id = id;
   }
 
@@ -113,6 +116,14 @@ public class OrderItem {
     this.lastName = lastName;
   }
 
+  public double getPrice() {
+    return price;
+  }
+
+  public void setPrice(double p) {
+    this.price = p;
+  }
+
   /**
    * Create a human readable serialization.
    */
@@ -125,6 +136,17 @@ public class OrderItem {
    */
   public static List<OrderItem> retrieveAll(EntityManager em) {
     TypedQuery<OrderItem> query = em.createQuery("SELECT b FROM OrderItem b", OrderItem.class);
+    List<OrderItem> orderItems = query.getResultList();
+    System.out.println("OrderItem.retrieveAll: " + orderItems.size()
+        + " orderItems were loaded from DB.");
+    return orderItems;
+  }
+
+  /**
+   * Retrieve all orderItem records from the orderItems table that belong to the cart.
+   */
+  public static List<OrderItem> getCart(EntityManager em, int idToLookFor) {
+    TypedQuery<OrderItem> query = em.createQuery("SELECT b FROM OrderItem b WHERE b.orderID = :id", OrderItem.class).setParameter("id", idToLookFor);
     List<OrderItem> orderItems = query.getResultList();
     System.out.println("OrderItem.retrieveAll: " + orderItems.size()
         + " orderItems were loaded from DB.");
@@ -147,9 +169,9 @@ public class OrderItem {
    * @throws Exception
    */
   public static void add(EntityManager em, UserTransaction ut, int orderID, int itemID, int quantity,
-      String size, String firstName, String lastName) throws Exception {
+      String size, String firstName, String lastName, double p) throws Exception {
     ut.begin();
-    OrderItem orderItem = new OrderItem(orderID, itemID, quantity, size, firstName, lastName);
+    OrderItem orderItem = new OrderItem(orderID, itemID, quantity, size, firstName, lastName, p);
     em.persist(orderItem);
     ut.commit();
     System.out.println("OrderItem.add: the orderItem " + orderItem + " was saved.");
@@ -160,7 +182,7 @@ public class OrderItem {
    * @throws Exception
    */
   public static void update(EntityManager em, UserTransaction ut, int id, int orderID, int itemID, int quantity,
-  String size, String firstName, String lastName) throws Exception {
+  String size, String firstName, String lastName, double p) throws Exception {
     ut.begin();
     OrderItem orderItem = em.find(OrderItem.class, id);
 
@@ -182,6 +204,9 @@ public class OrderItem {
     if (lastName != null && !lastName.equals(orderItem.lastName)) {
       orderItem.setLastName(lastName);
     }
+    if (p != orderItem.getPrice()) {
+      orderItem.setPrice(p);
+    }
 
     ut.commit();
     System.out.println("OrderItem.update: the orderItem " + orderItem + " was updated.");
@@ -198,5 +223,10 @@ public class OrderItem {
     em.remove(orderItem);
     ut.commit();
     System.out.println( "OrderItem.destroy: the orderItem " + orderItem + " was deleted.");
+  }
+
+  public static double getTotal(EntityManager em, int idToLookFor) {
+    double res = (double) em.createQuery("SELECT COALESCE(SUM(b.quantity * b.price),0) FROM OrderItem b WHERE b.orderID = :id").setParameter("id", idToLookFor).getSingleResult();
+    return res;
   }
 }
