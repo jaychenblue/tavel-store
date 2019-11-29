@@ -3,7 +3,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:x="http://primefaces.org/ui">
 
   <ui:composition template="/WEB-INF/templates/page.xhtml">
     <ui:define name="main">
@@ -17,35 +18,82 @@
         </div>
 
         <!-- Container -->
-        <h:form id="add">
-            <h:dataTable value="#{orderItemCtrl.getOrderItemsInCart(orderCtrl.getCartId())}" var="b">
-                <h:column>
-                <f:facet name="header">Item</f:facet>
-                    #{itemCtrl.items[b.itemId].title}
-                </h:column>
-                <h:column>
-                <f:facet name="header">Quantity</f:facet>
-                    #{b.quantity}
-                </h:column>
-                <h:column>
-                <f:facet name="header">Price</f:facet>
-                    #{itemCtrl.items[b.itemId].price}
-                </h:column>
-                <h:column>
-                <f:facet name="header">Total</f:facet>
-                    #{itemCtrl.items[b.itemId].price * b.quantity}
-                </h:column>
-                <h:column>
-                <f:facet name="header">Delete</f:facet>
-                    <h:commandButton value="Delete" action="#{orderCtrl.updatePrice(orderCtrl.getCartId(), (-1 * itemCtrl.items[b.itemId].price * OrderItem.quantity))}">
-                        <f:actionListener binding="#{orderItemCtrl.destroy(b.ID)}}" />
-                    </h:commandButton>
-                </h:column>
-            </h:dataTable>
-            <p>Total: ${orderCtrl.getOrder(orderCtrl.getCartId()).price}</p>
-            <h:commandButton value="Finish Order" action="#{orderCtrl.finishOrder(orderCtrl.getCartId())}" />
-        </h:form>
-        <h:button value="Back to Catalog" class="btn btn-lg btn-info" outcome="catalog" />
+        <div id="outer-container">
+                <div class="container-fluid" id="rc">
+                    <br />
+                    <h:button value="Back to Catalog" class="btn btn-lg btn-outline-secondary" outcome="catalog" />
+                    <br /><br />
+                    <div class="row">
+                        <div class="col-6">
+                            <h1 class="display-4">Your Shopping Cart</h1>
+                        </div>
+                        <div class="col-4">
+    
+                        </div>
+                        <div class="col-2">
+                            
+                        </div>
+                    </div>
+                    <br />
+                    <h:form prependId="false">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col" style="width:40%">Product Name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price (per unit)</th>
+                                    <th scope="col">Size</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col" style="width:10%">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ui:repeat var="item" value="#{orderItemCtrl.getOrderItemsInCart(orderCtrl.getCartId())}" varStatus="myVarStatus">
+                                    <tr>
+                                        <th scope="row">#{myVarStatus.index}</th>
+                                        <td>#{itemCtrl.items[item.itemId - 1].title}</td>
+                                        <td>#{item.quantity}</td>
+                                        <td>$#{itemCtrl.items[item.itemId - 1].price}</td>
+                                        <td>#{item.size}</td>
+                                        <td>$#{itemCtrl.items[item.itemId - 1].price * item.quantity}</td>
+                                        <td>
+                                            <h:form prependId="false">
+                                                <h:commandLink value="Delete" class="btn btn-outline-danger btn-block" action="#{orderItemCtrl.destroy(b.ID)}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </tbody>
+                        </table>
+                        <hr />
+                        <div class="row">
+                            <div class="col-8">
+    
+                            </div>
+                            <div class="col-4">
+                                <span style="float:right;"><h1>Total Price: <span style="color:#ff4d4d;">$#{orderItemCtrl.getTotal(orderCtrl.getCartId())}</span></h1></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                
+                            </div>
+                            <div class="col-1">
+    
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                            <div class="col-4">
+                                <h:commandButton value="Finish Order" class="btn btn-lg btn-primary btn-block" action="#{orderCtrl.finishOrder(orderCtrl.getCartId(), orderItemCtrl.getTotal(orderCtrl.getCartId()))}"/>
+                            </div>
+                        </div>
+                        <br />
+                    </h:form>
+                </div>
+            </div>
     </ui:define>
   </ui:composition>
 </html>

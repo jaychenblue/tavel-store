@@ -26,6 +26,7 @@ public class OrderItem {
   private String size;
   private String firstName;
   private String lastName;
+  private double price;
 
   /**
    * Default constructor, required for entity classes
@@ -35,7 +36,7 @@ public class OrderItem {
   /**
    * Constructors
    */
-  public OrderItem(int id, int itemId, int orderId, int q, String size, String firstName, String lastName) {
+  public OrderItem(int id, int itemId, int orderId, int q, String size, String firstName, String lastName, double p) {
     this.setID(id);
     this.setItemId(itemId);
     this.setOrderId(orderId);
@@ -43,15 +44,17 @@ public class OrderItem {
     this.setSize(size);
     this.setFirstName(firstName);
     this.setLastName(lastName);
+    this.setPrice(p);
   }
 
-  public OrderItem(int itemId, int orderId, int q, String size, String firstName, String lastName) {
+  public OrderItem(int itemId, int orderId, int q, String size, String firstName, String lastName, double p) {
     this.setItemId(itemId);
     this.setOrderId(orderId);
     this.setQuantity(q);
     this.setSize(size);
     this.setFirstName(firstName);
     this.setLastName(lastName);
+    this.setPrice(p);
   }
 
   /**
@@ -113,6 +116,14 @@ public class OrderItem {
     this.lastName = lastName;
   }
 
+  public double getPrice() {
+    return price;
+  }
+
+  public void setPrice(double p) {
+    this.price = p;
+  }
+
   /**
    * Create a human readable serialization.
    */
@@ -158,9 +169,9 @@ public class OrderItem {
    * @throws Exception
    */
   public static void add(EntityManager em, UserTransaction ut, int orderID, int itemID, int quantity,
-      String size, String firstName, String lastName) throws Exception {
+      String size, String firstName, String lastName, double p) throws Exception {
     ut.begin();
-    OrderItem orderItem = new OrderItem(orderID, itemID, quantity, size, firstName, lastName);
+    OrderItem orderItem = new OrderItem(orderID, itemID, quantity, size, firstName, lastName, p);
     em.persist(orderItem);
     ut.commit();
     System.out.println("OrderItem.add: the orderItem " + orderItem + " was saved.");
@@ -171,7 +182,7 @@ public class OrderItem {
    * @throws Exception
    */
   public static void update(EntityManager em, UserTransaction ut, int id, int orderID, int itemID, int quantity,
-  String size, String firstName, String lastName) throws Exception {
+  String size, String firstName, String lastName, double p) throws Exception {
     ut.begin();
     OrderItem orderItem = em.find(OrderItem.class, id);
 
@@ -193,6 +204,9 @@ public class OrderItem {
     if (lastName != null && !lastName.equals(orderItem.lastName)) {
       orderItem.setLastName(lastName);
     }
+    if (p != orderItem.getPrice()) {
+      orderItem.setPrice(p);
+    }
 
     ut.commit();
     System.out.println("OrderItem.update: the orderItem " + orderItem + " was updated.");
@@ -209,5 +223,10 @@ public class OrderItem {
     em.remove(orderItem);
     ut.commit();
     System.out.println( "OrderItem.destroy: the orderItem " + orderItem + " was deleted.");
+  }
+
+  public static double getTotal(EntityManager em, int idToLookFor) {
+    double res = (double) em.createQuery("SELECT COALESCE(SUM(b.quantity * b.price),0) FROM OrderItem b WHERE b.orderID = :id").setParameter("id", idToLookFor).getSingleResult();
+    return res;
   }
 }

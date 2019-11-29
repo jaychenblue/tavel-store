@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 
-@Entity @Table( name="Item")
+@Entity @Table( name="Item") 
 @RequestScoped @ManagedBean( name="Item")
 public class Item {
   @Id private int itemID;

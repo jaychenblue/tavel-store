@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+  <ui:composition template="/WEB-INF/templates/page.xhtml">
+    <ui:define name="main">
+        <!-- JUMBOTRON -->
+        <div class="jumbotron jumbotron-fluid text-center" id="main">
+            <div class="container">
+                <div class="row" style="margin-top:-35px;margin-bottom:-40px;">
+                    <img id="logo" src="#{facesContext.externalContext.requestContextPath}/resources/img/logo.png" href="home.html"></img>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container -->
+        <div id="outer-container">
+            <div class="container-fluid" id="rc">
+                <br />
+                <h:button value="Return Home" class="btn btn-outline-secondary btn-lg" outcome="index" />
+                <br /><br />
+                <h1 class="display-4">Thanks for shopping with us!</h1>       
+                <hr />    
+                <p class="lead">Your order has been succesfully confirmed! You'll receive further details when your order has shipped.</p> 
+                <br />
+                <h5 style="color:#007acc">Order Details</h5>
+                <h:form prependId="false">
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col" style="width:70%">Product Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price (per unit)</th>
+                                <th scope="col">Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat var="item" value="#{orderItemCtrl.getOrderItemsInCart(orderCtrl.getCartId() - 1)}" varStatus="myVarStatus">
+                                <tr>
+                                    <th scope="row">#{myVarStatus.index}</th>
+                                    <td>#{itemCtrl.items[item.itemId - 1].title}</td>
+                                    <td>#{item.quantity}</td>
+                                    <td>$#{itemCtrl.items[item.itemId - 1].price}</td>
+                                    <td>#{item.size}</td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                    <hr />
+                    <div class="row">
+                        <div class="col-8">
+
+                        </div>
+                        <div class="col-4">
+                            <span style="float:right;"><h1>Total Price: <span style="color:#ff4d4d;">$#{orderItemCtrl.getTotal(orderCtrl.getCartId() - 1)}</span></h1></span>
+                        </div>
+                    </div>
+                    <br />
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+  </ui:composition>
+</html>

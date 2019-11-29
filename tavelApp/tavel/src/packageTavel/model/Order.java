@@ -149,7 +149,7 @@ public class Order {
       order.setPrice(price);
     }
     ut.commit();
-    System.out.println("Order.update: the order " + order + " was updated.");
+    System.out.println("Order.update: the order " + order + " was updated. New price: " + price);
   }
 
   /**
