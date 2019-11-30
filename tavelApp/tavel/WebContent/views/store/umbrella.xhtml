@@ -17,20 +17,20 @@
         </div>
 
         <!-- Container -->
-        <h:form id="add">
-            <div id="outer-container">
-                <div class="container-fluid" id="rc">
-                    <div class="row">
-                        <div class="col-lg-6" id="item">
-                            <img src="#{facesContext.externalContext.requestContextPath}/resources/img/umbrella.jpg" id="pic"></img>
-                        </div>
-                        <div class="col-lg-6">
-                            <br></br><br></br>
-                            <h3><small class="text-muted">Dr. Tavel</small></h3>
-                            <h1>#{itemCtrl.items[3].title}</h1>
-                            <hr></hr>
-                            <p>Price: <span style="color:#ff4d4d; font-size: 20px;">$#{itemCtrl.items[3].price}</span></p>
-                            <br></br>
+        <div id="outer-container">
+            <div class="container-fluid" id="rc">
+                <div class="row">
+                    <div class="col-lg-6" id="item">
+                        <img src="#{facesContext.externalContext.requestContextPath}/resources/img/umbrella.jpg" id="pic"></img>
+                    </div>
+                    <div class="col-lg-6">
+                        <br></br><br></br>
+                        <h3><small class="text-muted">Dr. Tavel</small></h3>
+                        <h1>#{itemCtrl.items[3].title}</h1>
+                        <hr></hr>
+                        <p>Price: <span style="color:#ff4d4d; font-size: 20px;">$#{itemCtrl.items[3].price}</span></p>
+                        <br></br>
+                        <h:form id="add">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="input-group mb-3">
@@ -49,14 +49,14 @@
                             </div>
                             <br></br>
                             <h:commandButton value="Add to Cart" class="btn btn-lg btn-info" action="#{ orderItemCtrl.add(4, orderCtrl.getCartId(), OrderItem.quantity, OrderItem.size, OrderItem.firstName, OrderItem.lastName, itemCtrl.items[3].price)}" /><hr></hr>
-                            <p id="description">Prices in Canadian Dollars (CAD).</p>
-                            <hr></hr>
-                            <h:button value="Back to Catalog" class="btn btn-lg btn-info" outcome="catalog" />
-                        </div>
+                        </h:form>
+                        <p id="description">Prices in Canadian Dollars (CAD).</p>
+                        <hr></hr>
+                        <h:button value="Back to Catalog" class="btn btn-lg btn-info" outcome="catalog" />
                     </div>
                 </div>
             </div>
-        </h:form>
+        </div>
     </ui:define>
   </ui:composition>
 </html>

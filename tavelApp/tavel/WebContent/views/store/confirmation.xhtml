@@ -40,7 +40,7 @@
                         <tbody>
                             <ui:repeat var="item" value="#{orderItemCtrl.getOrderItemsInCart(orderCtrl.getCartId() - 1)}" varStatus="myVarStatus">
                                 <tr>
-                                    <th scope="row">#{myVarStatus.index}</th>
+                                    <th scope="row">#{myVarStatus.index + 1}</th>
                                     <td>#{itemCtrl.items[item.itemId - 1].title}</td>
                                     <td>#{item.quantity}</td>
                                     <td>$#{itemCtrl.items[item.itemId - 1].price}</td>
