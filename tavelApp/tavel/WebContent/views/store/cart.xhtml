@@ -83,12 +83,16 @@
                             <div class="col-1">
     
                             </div>
-                            <div class="col-4">
+                            <div class="col-7">
                                 
                             </div>
-                            <div class="col-4">
+                            <div class="col-1">
                                 <h:form prependId="false">
-                                    <h:commandButton value="Finish Order" class="btn btn-lg btn-primary btn-block" action="#{orderCtrl.finishOrder(orderCtrl.getCartId(), orderItemCtrl.getTotal(orderCtrl.getCartId()), orderItemCtrl.countItems(orderCtrl.getCartId()))}"/>
+                                    <h:commandButton action="confirmation" value="confirmation">
+                                        <f:actionListener binding="#{orderCtrl.finishOrder(orderCtrl.getCartId(), orderItemCtrl.getTotal(orderCtrl.getCartId()), orderItemCtrl.countItems(orderCtrl.getCartId()))}">
+
+                                        </f:actionListener>
+                                    </h:commandButton>
                                 </h:form>
                             </div>
                         </div>
