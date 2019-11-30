@@ -212,6 +212,14 @@ public class OrderItem {
     System.out.println("OrderItem.update: the orderItem " + orderItem + " was updated.");
   }
 
+  public static void updateQuantity(EntityManager em, UserTransaction ut, int idToLookFor, int q) throws Exception {
+    ut.begin();
+    OrderItem orderItem = em.find(OrderItem.class, idToLookFor);
+    orderItem.setQuantity(q);
+    ut.commit();
+    System.out.println("OrderItem.updateQuantity executed");
+  }
+
   /**
    * Delete a OrderItem instance
    * @throws Exception
@@ -233,5 +241,30 @@ public class OrderItem {
   public static Long countItems(EntityManager em, int idToLookFor) {
     Long res = (Long) em.createQuery("SELECT COUNT(b.id) FROM OrderItem b WHERE b.orderID = :id").setParameter("id", idToLookFor).getSingleResult();
     return res;
+  }
+
+  public static OrderItem getRepeatedItem(EntityManager em, int iid, int oid, String s, String fn, String ln) {
+    List<OrderItem> items = getCart(em, oid);
+
+    for (OrderItem oi : items) {
+      if (oi.itemID == iid) {
+        switch (iid) {
+          case 1: case 2:
+            if (fn != null && fn.equals(oi.firstName) && ln != null && ln.equals(oi.lastName) && s != null && s.equals(oi.size)) {
+              return oi;
+            }
+            break;
+          case 3: case 4:
+            return oi;
+          case 5: case 6:
+            if (s != null && s.equals(oi.size)) {
+              return oi;
+            }
+            break;
+        }
+      }
+    }
+
+    return null;
   }
 }
