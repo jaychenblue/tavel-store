@@ -66,10 +66,17 @@ public class OrderItemController {
    */
   public String add(int itemID, int orderId, int q, String size, String firstName, String lastName, double p) {
     try {
-      OrderItem.add(em, ut, itemID, orderId, q, size, firstName, lastName, p);
-      // Clear the form after creating the OrderItem record
-      FacesContext facesContext = FacesContext.getCurrentInstance();
-      facesContext.getExternalContext().getRequestMap().remove( "orderItem");
+      OrderItem repeated = OrderItem.getRepeatedItem(em, itemID, orderId, size, firstName, lastName);
+
+      if (repeated == null) {
+        OrderItem.add(em, ut, itemID, orderId, q, size, firstName, lastName, p);
+        // Clear the form after creating the OrderItem record
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.getExternalContext().getRequestMap().remove( "orderItem");
+      } else {
+        updateQuantity(repeated.getID(), (repeated.getQuantity() + q));
+      }
+
     } catch ( Exception e) {
       e.printStackTrace();
     }
@@ -82,6 +89,17 @@ public class OrderItemController {
   public void update(int id, int itemID, int orderId, int q, String size, String firstName, String lastName, double p) {
     try {
       OrderItem.update(em, ut, id, itemID, orderId, q, size, firstName, lastName, p);
+    } catch ( Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Update the quantity of an OrderItem instance.
+   */
+  public void updateQuantity(int id, int q) {
+    try {
+      OrderItem.updateQuantity(em, ut, id, q);
     } catch ( Exception e) {
       e.printStackTrace();
     }
