@@ -63,11 +63,19 @@
                                 <div class="col-lg-6"></div>
                             </div>
                             <br></br>
-                            <h:commandButton value="Add to Cart" class="btn btn-lg btn-info" action="#{ orderItemCtrl.add(5, orderCtrl.getCartId(), OrderItem.quantity, OrderItem.size, OrderItem.firstName, OrderItem.lastName, itemCtrl.items[4].price)}" /><hr></hr>
+                            <div class="row">
+                                <div class="col-6">
+                                    <h:commandButton value="Add to Cart" class="btn btn-lg btn-info" action="#{ orderItemCtrl.add(5, orderCtrl.getCartId(), OrderItem.quantity, OrderItem.size, OrderItem.firstName, OrderItem.lastName, itemCtrl.items[4].price)}" />
+                                    <h:button value="Back to Catalog" class="btn btn-lg btn-outline-secondary" style="margin-left:15px;"
+                                        outcome="catalog" />
+                                </div>
+                                <div class="col-6">
+                            
+                                </div>
+                            </div>
                         </h:form>
-                        <p id="description">Prices in Canadian Dollars (CAD).</p>
                         <hr></hr>
-                        <h:button value="Back to Catalog" class="btn btn-lg btn-info" outcome="catalog" />
+                        <p id="description">Prices in Canadian Dollars (CAD).</p>
                     </div>
                 </div>
             </div>
