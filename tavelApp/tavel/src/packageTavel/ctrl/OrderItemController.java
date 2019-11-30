@@ -1,5 +1,6 @@
 package packageTavel.ctrl;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -99,7 +100,8 @@ public class OrderItemController {
   }
 
   public double getTotal(int id) {
-    return OrderItem.getTotal(em, id);
+    DecimalFormat df = new DecimalFormat("#.##");
+    return Double.parseDouble(df.format(OrderItem.getTotal(em, id)));
   }
 
   public Long countItems(int id) {
