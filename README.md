@@ -3,7 +3,7 @@
 
 * Course: SOEN 343 - Fall 2019
 
-* Platform: Web Application
+* Category: Web application
 
 * Front end: Bootstrap
 
