@@ -28,7 +28,7 @@ Ying Fang
 <!-- GETTING STARTED -->
 # Getting Started
 
-To get the web application working on your computer, follow the steps in this Google Doc: https://docs.google.com/document/d/1xuZ4WiJvduG4O8sZl1HA-2hCObi_tMnEV9sHTPzqpKs/edit
+To set up and view the Tavel website, follow the steps in this Google Doc: https://docs.google.com/document/d/1xuZ4WiJvduG4O8sZl1HA-2hCObi_tMnEV9sHTPzqpKs/edit
 
 ### Prerequisites
 
